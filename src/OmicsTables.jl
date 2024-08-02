@@ -11,6 +11,8 @@ using Mmap: mmap
 
 using XLSX: readtable
 
+import Base: show
+
 struct OmicsTable{T}
 
     row::Symbol
@@ -43,6 +45,24 @@ function OmicsTable(da; ke_ar...)
 
 end
 
+function _make_dataframe(ta)
+
+    return insertcols!(DataFrame(ta.matrix, ta.columns), 1, ta.row => ta.rows)
+
+end
+
+function show(io::IO, ta::OmicsTable)
+
+    return print(io, "$(ta.row)-x-$(ta.column)-x-$(ta.name)\n$(_make_dataframe(ta))")
+
+end
+
+function write(ts, ta)
+
+    return CSV_write(ts, _make_dataframe(ta); delim = '\t')
+
+end
+
 function read_dataframe(fi; ke_ar...)
 
     # TODO: Test not making an empty file and then remove.
@@ -63,16 +83,6 @@ end
 function read_dataframe(xl, sh; ke_ar...)
 
     return DataFrame(readtable(xl, sh; ke_ar...))
-
-end
-
-function write(ts, ta)
-
-    return CSV_write(
-        ts,
-        insertcols!(DataFrame(ta.matrix, ta.columns), 1, ta.row => ta.rows);
-        delim = '\t',
-    )
 
 end
 
