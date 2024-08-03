@@ -1,5 +1,5 @@
-name = "OmicsTables"
-uuid = "18599e30-af6a-45fe-a5d2-d03590457f1d"
+name = "OmicsIO"
+uuid = "ef94b1c6-03d3-4466-8750-aa0293bb2aed"
 authors = ["KwatMDPhD"]
 version = "1.0.0-DEV"
 
